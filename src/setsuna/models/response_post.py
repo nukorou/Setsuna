@@ -19,13 +19,12 @@ class ResponsePost(post.Post):
 
         link -- Link post ID.  
         content -- Post content.  
-        limit -- Delete time. Record style is Unix time.  
         password -- Password for manually delete.  
         lang -- Language code by ISO 639-2.  
         link -- Response to.  
         '''
+        super().__init__(content, password, lang)
         self.link = link 
-        post.Post.__init__(content, password, lang)
 
 
     def post_contribution(self) -> str:
@@ -37,10 +36,12 @@ class ResponsePost(post.Post):
         result = db.posts.insert_one({'content': self.content,
                                 'limit': self.limit,
                                 'password': self.password,
+                                'lang': self.lang,
                                 'link': self.link})
 
         # apothanasia linked contribution.
-        linked_post = db.read_from_db(self.link)
+        linked_post = post.Post('', '', '')
+        linked_post.get_post(self.link)
         linked_post.apothanasia()
 
         self.id = str(result.inserted_id)
@@ -57,8 +58,9 @@ class ResponsePost(post.Post):
 
         if not 'link' in re:
             raise TypeError(repr(re) + ' is not link contributon.')
-        self.id = re['_id']
+        self.id = str(re['_id'])
         self.content = re['content']
-        self.limit = re['time']
+        self.limit = re['limit']
         self.password = re['password']
         self.lang = re['lang']
+        self.link = re['link']

@@ -118,6 +118,7 @@ Contribution
   {
     "id": Your contribution id,
     "content": You contribute content,
+    "limit": Contribution delete time(Unix Time),
     "password": Delete contribution password,
     "lang": Language code by ISO 639-3.
   }
@@ -132,13 +133,17 @@ Response(no comment)
   {
     "id": Your responsed contribution id,
     "content": Your responsed contribution
+    "limit": Contribution delete time(Unix Time),
+    "password": "Delete contribution password
+    "lang": Language code by ISO 639-3,
+    "link": Linked to contribution.
   }
 
 
 Response(comment)
 ~~~~~~~~~~~~~~~~~~~~
 
-2. Make JSON::
+1. Make JSON::
 
   {
     "content":your content here,
@@ -153,11 +158,12 @@ Response(comment)
 3. Comming server response::
 
   {
-    "id": Your contribution id,
-    "content": You contribute content,
-    "password": Delete contribution password,
-    "lang": Language code by ISO 639-3.
-    "link": Your response contribution id.
+    "id": Your responsed contribution id,
+    "content": Your responsed contribution
+    "limit": Contribution delete time(Unix Time),
+    "password": "Delete contribution password
+    "lang": Language code by ISO 639-3,
+    "link": Linked to contribution.
   }
 
 
