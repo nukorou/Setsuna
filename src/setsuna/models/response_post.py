@@ -2,6 +2,7 @@ from . import post
 from .. import conf as db
 from bson import objectid
 
+
 class ResponsePost(post.Post):
     '''
     Response post class.  
@@ -13,6 +14,7 @@ class ResponsePost(post.Post):
     password -- Password for manually delete.
     lang -- Language code by ISO 639-2.  
     '''
+
     def __init__(self, link: str, content: str, password: str, lang: str):
         '''
         Make response post.  
@@ -24,8 +26,7 @@ class ResponsePost(post.Post):
         link -- Response to.  
         '''
         super().__init__(content, password, lang)
-        self.link = link 
-
+        self.link = link
 
     def post_contribution(self) -> str:
         '''
@@ -34,10 +35,10 @@ class ResponsePost(post.Post):
         return -- identity key from DB
         '''
         result = db.posts.insert_one({'content': self.content,
-                                'limit': self.limit,
-                                'password': self.password,
-                                'lang': self.lang,
-                                'link': self.link})
+                                      'limit': self.limit,
+                                      'password': self.password,
+                                      'lang': self.lang,
+                                      'link': self.link})
 
         # apothanasia linked contribution.
         linked_post = post.Post('', '', '')
@@ -46,7 +47,6 @@ class ResponsePost(post.Post):
 
         self.id = str(result.inserted_id)
         return self.id
-
 
     def get_post(self, uid: str):
         '''
