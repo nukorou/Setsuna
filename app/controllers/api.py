@@ -108,7 +108,7 @@ def get_posts_lang_limit(lang: str, limit: int):
 @app.route('/api/<lang>/posts/start/<datetime_s>/end/<datetime_e>', methods=['GET'])
 def get_posts_lang_ontime(lang: str, datetime_s: str, datetime_e: str):
     tmp_posts = posts.Posts()
-    tmp_posts.get_lang_posts_between
+    tmp_posts.get_lang_posts_between()
 
     return Response(json.dumps(vars(tmp_posts)), 200)
 
