@@ -112,6 +112,7 @@ def get_posts_lang_ontime(lang: str, datetime_s: str, datetime_e: str):
     return Response(json.dumps(vars(tmp_posts)), 200)
 
 
+#
 @app.route('/api/post/<uid>', methods=['GET'])
 def get_post(uid: str):
     tmp_post = post_factory.post_factory(uid)
@@ -119,6 +120,7 @@ def get_post(uid: str):
     return Response(json.dumps(vars(tmp_post)), 200)
 
 
+# 投稿
 @app.route('/api/', methods=['POST'])
 @app.route('/api/post/', methods=['POST'])
 def post_content():
@@ -140,6 +142,7 @@ def post_content():
     return Response(json.dumps(vars(tmp_post)), 200)
 
 
+# 延命
 @app.route('/api/post/<uid>', methods=['POST'])
 def res_post(uid: str):
     if know_post(uid):
@@ -158,6 +161,7 @@ def res_post(uid: str):
         return Response(json.dumps(vars(tmp_post)), 200)
 
 
+# 削除
 @app.route('/api/post/<uid>', methods=['DELETE'])
 def delete_post(uid):
     if know_post(uid):
