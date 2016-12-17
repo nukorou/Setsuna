@@ -1,5 +1,0 @@
-- hosts: mongodb
-  remote_user: root
-  tasks:
-    - name: mongodbのインストール
-      apt: name=mongodb-server
