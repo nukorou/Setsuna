@@ -7,7 +7,7 @@ application = Flask(__name__)
 application.register_blueprint(web.app)
 application.register_blueprint(api.app)
 
-if os.environ.get('PRODUCTION'):
+if not os.environ.get('PRODUCTION'):
     # configuration
     DEBUG = True
 
