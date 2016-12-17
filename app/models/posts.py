@@ -15,7 +15,7 @@ class Posts(list):
     def __init__(self):
         list.__init__(self)
 
-    def get_now_posts(self, asc=True):
+    def get_all_posts(self, asc=True):
         """
         Get all contribution from DB.  
 
@@ -25,7 +25,7 @@ class Posts(list):
         now_all = db.posts.find().sort('timestamp', pymongo.ASCENDING if asc == True else pymongo.DESCENDING)
         self.post_collect(now_all)
 
-    def get_posts_save(self, limit=10, asc=True):
+    def get_posts_by_limit(self, limit=10, asc=True):
         """
         Get save number of contribution save from DB.  
 
@@ -36,7 +36,7 @@ class Posts(list):
                                                      pymongo.ASCENDING if asc == True else pymongo.DESCENDING)
         self.post_collect(now_save)
 
-    def get_lang_posts(self, lang='und', asc=True):
+    def get_posts_by_lang(self, lang='und', asc=True):
         """
         Get narrow language contribution from DB.
 
@@ -46,7 +46,7 @@ class Posts(list):
                                                        pymongo.ASCENDING if asc == True else pymongo.DESCENDING)
         self.post_collect(lang_post)
 
-    def get_lang_posts_save(self, lang='und', limit=10, asc=True):
+    def get_posts_by_lang_and_limit(self, lang='und', limit=10, asc=True):
         """
         Get number of contribution save and narrow language from DB.  
 
@@ -70,7 +70,7 @@ class Posts(list):
                                                                                        pymongo.ASCENDING if asc == True else pymongo.DESCENDING)
         self.post_collect(between_post)
 
-    def get_lang_posts_between(self, start: datetime, end: datetime, lang='und', asc=True):
+    def get_posts_by_lang_and_between(self, start: datetime, end: datetime, lang='und', asc=True):
         """
         Get between times and  contributions and narrow language from DB.
 

@@ -57,6 +57,7 @@ def know_post(uid):
         return False
 
 
+# APIの説明書
 @app.route('/api/', methods=['GET'])
 def index():
     with open('setsuna/readme.rst', encoding='utf-8') as readme:
@@ -64,24 +65,27 @@ def index():
     return re_text
 
 
+# 全ての刹那を取得する
 @app.route('/api/posts', methods=['GET'])
-def get_posts():
+def get_all_posts():
     tmp_posts = posts.Posts()
-    tmp_posts.get_now_posts()
+    tmp_posts.get_all_posts()
 
     return Response(json.dumps(tmp_posts), 200)
 
 
-@app.route('/api/posts/save/<int:limit>', methods=['GET'])
-def get_posts_limit(limit: int):
+# リミットの数まで取得する
+@app.route('/api/posts/limit/<int:limit>', methods=['GET'])
+def get_posts_by_limit(limit: int):
     tmp_posts = posts.Posts()
-    tmp_posts.get_posts_save(limit)
+    tmp_posts.get_posts_by_limit(limit)
 
     return Response(json.dumps(tmp_posts), 200)
 
 
+# 日付を指定して刹那を得る
 @app.route('/api/posts/start/<datetime_s>/end/<datetime_e>', methods=['GET'])
-def get_posts_ontime(datetime_s: str, datetime_e: str):
+def get_posts_between(datetime_s: str, datetime_e: str):
     tmp_posts = posts.Posts()
     tmp_posts.get_posts_between(datetime.strptime(datetime_s, _DATE_FORMAT),
                                 datetime.strptime(datetime_e, _DATE_FORMAT))
@@ -89,31 +93,34 @@ def get_posts_ontime(datetime_s: str, datetime_e: str):
     return Response(json.dumps(tmp_posts), 200)
 
 
+# 指定した言語の刹那を取得する
 @app.route('/api/<lang>/posts', methods=['GET'])
-def get_posts_lang(lang: str):
+def get_posts_by_lang(lang: str):
     tmp_posts = posts.Posts()
-    tmp_posts.get_lang_posts(lang)
+    tmp_posts.get_posts_by_lang(lang)
 
     return Response(json.dumps(tmp_posts), 200)
 
 
-@app.route('/api/<lang>/posts/save/<int:limit>', methods=['GET'])
-def get_posts_lang_limit(lang: str, limit: int):
+# 数と言語を指定して刹那を取得する
+@app.route('/api/<lang>/posts/limit/<int:limit>', methods=['GET'])
+def get_posts_by_lang_and_limit(lang: str, limit: int):
     tmp_posts = posts.Posts()
-    tmp_posts.get_lang_posts_save(lang, limit)
+    tmp_posts.get_posts_by_lang_and_limit(lang, limit)
 
     return Response(json.dumps(tmp_posts), 200)
 
 
+# 言語と日付を指定して刹那を取得する
 @app.route('/api/<lang>/posts/start/<datetime_s>/end/<datetime_e>', methods=['GET'])
-def get_posts_lang_ontime(lang: str, datetime_s: str, datetime_e: str):
+def get_posts_by_lang_and_between(datetime_s: str, datetime_e: str, lang: str):
     tmp_posts = posts.Posts()
-    tmp_posts.get_lang_posts_between()
+    tmp_posts.get_posts_by_lang_and_between(datetime_s, datetime_e, lang)
 
     return Response(json.dumps(vars(tmp_posts)), 200)
 
 
-#
+# uid指定の刹那を１つ
 @app.route('/api/post/<uid>', methods=['GET'])
 def get_post(uid: str):
     tmp_post = post_factory.post_factory(uid)
