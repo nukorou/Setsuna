@@ -29,7 +29,7 @@ class Posts(list):
         """
         Get save number of contribution save from DB.  
 
-        limit -- save number of contributoin
+        limit -- save number of contribution
         asc -- asc / desc
         """
         now_save = db.posts.find().limit(limit).sort('timestamp',
@@ -50,7 +50,7 @@ class Posts(list):
         """
         Get number of contribution save and narrow language from DB.  
 
-        limit -- save number of contributoin
+        limit -- save number of contribution
         lang -- narrow language
         asc -- asc / desc
         """
