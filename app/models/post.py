@@ -75,7 +75,7 @@ class Post:
         '''
         self.content = content
         self.limit = int(time.time()) + 3600 * conf.life
-        self.password = make_password() if '' else password
+        self.password = self.make_password() if '' else password
         self.lang = lang if lang in _LANG_LIST else 'und'
 
     def post_contribution(self) -> str:
