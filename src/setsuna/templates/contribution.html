@@ -1,8 +1,0 @@
-{% extends "header.html" %}
-<section class="contribution">
-    {% contribution %}
-</section>
-<form action="{{ url_for('contribute') }}" method="post" class="form">
-    <textarea cols="20" rows="10" name="contribution" placeholder="White here your response.">
-    <button type="submit" class="btn">Post</buttion>
-</form>
