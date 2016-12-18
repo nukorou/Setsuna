@@ -1,12 +1,5 @@
 {% extends 'header.html' %}
 {% block contents %}
-    <article class="contributions">
-        {% for contribution in contributions %}
-            <section class="contribution">
-                {{ contribution }}
-            </section>
-        {% endfor %}
-    </article>
     <div class="container">
         <div class="panel-group" id="accordion">
             <setsuna-from></setsuna-from>
@@ -14,5 +7,4 @@
         <setsuna-list2></setsuna-list2>
 
     </div>
-
 {% endblock %}
