@@ -1,7 +1,6 @@
 import random
-import time
+from datetime import datetime, timedelta
 from . import conf as db
-from . import conf
 
 from bson import objectid
 
@@ -76,7 +75,7 @@ def make_password(length=4) -> str:
 
 class Post:
     """
-    Base post class.  
+    Base post class.
 
     id -- identity key from DB.  
     content -- Post content.  
@@ -95,7 +94,8 @@ class Post:
         lang -- Language code by ISO 639-3.  
         """
         self.content = content
-        self.limit = int(time.time()) + 3600 * conf.life
+        self.created_at = datetime.utcnow()
+        self.deleted_at = datetime.utcnow() + timedelta(seconds=db.life)
         self.password = make_password() if '' else password
         self.lang = lang if lang in _LANG_LIST else 'und'
         self.id = ''
@@ -107,7 +107,8 @@ class Post:
         return -- identity key from DB
         """
         result = db.posts.insert_one({'content': self.content,
-                                      'limit': self.limit,
+                                      'deleted_at': self.deleted_at,
+                                      'created_at': self.created_at,
                                       'password': self.password,
                                       'lang': self.lang
                                       })
@@ -120,9 +121,9 @@ class Post:
 
         return -- new delete limit time.
         """
-        self.limit += 3600
+        self.deleted_at += timedelta(seconds=db.extend_time)
         db.posts.update_one({'_id': objectid.ObjectId(self.id)},
-                            {'$set': {'limit': self.limit}})
+                            {'$set': {'deleted_at': self.deleted_at}})
 
     def get_post(self, uid: str):
         """
@@ -130,14 +131,15 @@ class Post:
 
         uid -- identity ID
         """
-        re = db.posts.find_one({'_id': objectid.ObjectId(uid)})
-        if 'link' in re:
-            raise TypeError(repr(re) + ' is not normal contribution.')
-        self.id = str(re['_id'])
-        self.content = re['content']
-        self.limit = re['limit']
-        self.password = re['password']
-        self.lang = re['lang']
+        res = db.posts.find_one({'_id': objectid.ObjectId(uid)})
+        if 'link' in res:
+            raise TypeError(repr(res) + ' is not normal contribution.')
+        self.id = str(res['_id'])
+        self.content = res['content']
+        self.password = res['password']
+        self.lang = res['lang']
+        self.created_at = res['created_at']
+        self.deleted_at = res['deleted_at']
 
     def password_checker(self, password: str):
         """
