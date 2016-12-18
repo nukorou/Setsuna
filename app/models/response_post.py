@@ -5,7 +5,8 @@ from bson import objectid
 
 class ResponsePost(post.Post):
     """
-    Response post class.  
+    Response post class.
+    返信用刹那
 
     link -- Link post ID.  
     uid -- identity key from DB.  
@@ -35,8 +36,9 @@ class ResponsePost(post.Post):
         return -- identity key from DB
         """
         result = db.posts.insert_one({'content': self.content,
-                                      'limit': self.limit,
                                       'password': self.password,
+                                      'deleted_at': self.deleted_at,
+                                      'created_at': self.created_at,
                                       'lang': self.lang,
                                       'link': self.link})
 
@@ -54,13 +56,14 @@ class ResponsePost(post.Post):
 
         uid -- identity ID
         """
-        re = db.posts.find_one({'_id': objectid.ObjectId(uid)})
+        res = db.posts.find_one({'_id': objectid.ObjectId(uid)})
 
-        if 'link' not in re:
-            raise TypeError(repr(re) + ' is not link contributon.')
-        self.id = str(re['_id'])
-        self.content = re['content']
-        self.limit = re['limit']
-        self.password = re['password']
-        self.lang = re['lang']
-        self.link = re['link']
+        if 'link' not in res:
+            raise TypeError(repr(res) + ' is not link contribution.')
+        self.id = str(res['_id'])
+        self.content = res['content']
+        self.password = res['password']
+        self.lang = res['lang']
+        self.link = res['link']
+        self.created_at = res['created_at']
+        self.deleted_at = res['deleted_at']
