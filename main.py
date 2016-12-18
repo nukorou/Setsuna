@@ -14,5 +14,6 @@ if not os.environ.get('PRODUCTION'):
 
 if __name__ == "__main__":
     # no index
+    print('hoge')
     db.posts.create_index("deleted_at", expireAfterSeconds=60)
     application.run()
