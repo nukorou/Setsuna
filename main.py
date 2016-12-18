@@ -1,12 +1,18 @@
 from flask import Flask
 from app.controllers import web, api
 import os
-from app.models import conf as db
+from flask_compress import Compress
+from werkzeug.contrib.profiler import ProfilerMiddleware
 
 application = Flask(__name__)
 
 application.register_blueprint(web.app)
 application.register_blueprint(api.app)
+
+application.config['PROFILE'] = True
+application.wsgi_app = ProfilerMiddleware(application.wsgi_app, sort_by=['tottime'], restrictions=[20])
+
+Compress(application)
 
 if not os.environ.get('PRODUCTION'):
     # configuration
