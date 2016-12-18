@@ -3,6 +3,7 @@ from datetime import datetime
 from ..models import post, response_post, posts
 from flask import abort, Request, request, Response, Blueprint
 from ..models.post_factory import post_factory
+from cache import cache
 
 app = Blueprint('api', __name__)
 
@@ -77,6 +78,7 @@ def index():
 
 
 # 全ての刹那を取得する
+@cache.cached(timeout=20)
 @app.route('/api/posts', methods=['GET'])
 def get_all_posts():
     tmp_posts = posts.Posts()
@@ -86,6 +88,7 @@ def get_all_posts():
 
 
 # リミットの数まで取得する
+@cache.cached(timeout=20)
 @app.route('/api/posts/limit/<int:limit>', methods=['GET'])
 def get_posts_by_limit(limit: int):
     tmp_posts = posts.Posts()
@@ -95,6 +98,7 @@ def get_posts_by_limit(limit: int):
 
 
 # 日付を指定して刹那を得る
+@cache.cached(timeout=20)
 @app.route('/api/posts/start/<datetime_s>/end/<datetime_e>', methods=['GET'])
 def get_posts_between(datetime_s: str, datetime_e: str):
     tmp_posts = posts.Posts()
@@ -105,6 +109,7 @@ def get_posts_between(datetime_s: str, datetime_e: str):
 
 
 # 指定した言語の刹那を取得する
+@cache.cached(timeout=20)
 @app.route('/api/<lang>/posts', methods=['GET'])
 def get_posts_by_lang(lang: str):
     tmp_posts = posts.Posts()
@@ -114,6 +119,7 @@ def get_posts_by_lang(lang: str):
 
 
 # 数と言語を指定して刹那を取得する
+@cache.cached(timeout=20)
 @app.route('/api/<lang>/posts/limit/<int:limit>', methods=['GET'])
 def get_posts_by_lang_and_limit(lang: str, limit: int):
     tmp_posts = posts.Posts()
@@ -123,6 +129,7 @@ def get_posts_by_lang_and_limit(lang: str, limit: int):
 
 
 # 言語と日付を指定して刹那を取得する
+@cache.cached(timeout=20)
 @app.route('/api/<lang>/posts/start/<datetime_s>/end/<datetime_e>', methods=['GET'])
 def get_posts_by_lang_and_between(datetime_s: str, datetime_e: str, lang: str):
     tmp_posts = posts.Posts()
