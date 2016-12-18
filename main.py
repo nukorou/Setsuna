@@ -1,6 +1,7 @@
 from flask import Flask
 from app.controllers import web, api
 import os
+from app.models import conf as db
 
 application = Flask(__name__)
 
@@ -12,4 +13,6 @@ if not os.environ.get('PRODUCTION'):
     DEBUG = True
 
 if __name__ == "__main__":
+    # no index
+    db.posts.create_index("deleted_at", expireAfterSeconds=60)
     application.run()
